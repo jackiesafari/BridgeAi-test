@@ -1,4 +1,4 @@
-# CDP Agentkit LangChain Extension Examples - Chatbot Python
+# CDP Agentkit LangChain Extension Examples - WhatsApp Chatbot Python
 
 This example demonstrates an agent setup as a Update WhatsApp """terminal""" style chatbot with access to the full set of CDP Agentkit actions.
 
@@ -24,10 +24,30 @@ python --version
 poetry --version
 ```
 
+## Setup Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+## Create a requirements.txt file yet and add the following dependencies:
+langchain
+python-dotenv
+pydantic
+
 ## Installation
 ```bash
 poetry install
 ```
+Installation
+
+Install the library
+
+```bash
+%pip install -qU cdp-langchain
+```
+
+
 
 ## Run the Chatbot
 
@@ -37,7 +57,16 @@ poetry install
   - "CDP_API_KEY_PRIVATE_KEY"
   - "OPENAI_API_KEY"
   - "NETWORK_ID" (Defaults to `base-sepolia`)
-  - 
+  
+  FOR WHATSAPP 
+  - "ACCESS_TOKEN"
+  - "APP_ID"
+  - "RECEPIENT_WAID"
+  - "VERSION"
+  - "PHONE_NUMBER_ID"
+
+
+
 
 ```bash
 make run
@@ -46,4 +75,13 @@ make run
 ## Troubleshooting
 If you encounter issues with Poetry make sure to add a PATH to your shell configuration file. 
 
+### To get the WhatsApp API working
+- Make sure to set the correct values in the .env file
+- Make sure to set the correct values in the webhook.py file
+ 1. First, install Flask and required packages
+ # Using poetry
+poetry add flask python-dotenv requests
+2. Create Ngrok account and install the ngrok CLI 
+3. Run ngrok and get the ngrok URL
+- Make sure to set the correct values in the whatsapp_bot.py file
 
