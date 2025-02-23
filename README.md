@@ -1,209 +1,87 @@
-<div align="center">
-  <p>
-    <a href="https://docs.cdp.coinbase.com/agentkit/docs/welcome">
-      <img src="./agentkit_banner.png"/>
-    </a>
-  </p>
-  <h1 style="font-size: 3em; margin-bottom: 20px;">
-    AgentKit
-  </h1>
+# CDP WhatsApp AI Agent
 
-  <p>
-    <img src="./agent_k.webp" width="300"/>
-  </p>
+A WhatsApp agent powered by CDP (Coinbase Developer Platform) Agentkit and LangChain, enabling intelligent conversations and blockchain interactions through WhatsApp.
 
-  <p style="font-size: 1.2em; max-width: 600px; margin: 0 auto 20px;">
-    Every agent deserves a wallet.
-  </p>
+## Features
 
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/cdp-agentkit-core?style=flat-square)](https://pypistats.org/packages/cdp-agentkit-core)
-[![npm downloads](https://img.shields.io/npm/dm/@coinbase/cdp-agentkit-core?style=flat-square)](https://www.npmjs.com/package/@coinbase/agentkit)
-[![GitHub star chart](https://img.shields.io/github/stars/coinbase/cdp-agentkit?style=flat-square)](https://star-history.com/#coinbase/agentkit)
-[![Open Issues](https://img.shields.io/github/issues-raw/coinbase/cdp-agentkit?style=flat-square)](https://github.com/coinbase/agentkit/issues)
+- WhatsApp message handling via webhooks
+- AI-powered responses using GPT-4
+- Blockchain interaction capabilities on Polygon network
+- Autonomous and interactive chat modes
+- Secure key management and environment configuration
 
-</div>
+## Prerequisites
 
-## Table of Contents
+- Python 3.10+
+- [Poetry](https://python-poetry.org/docs/#installation) for dependency management
+- [CDP API Key](https://portal.cdp.coinbase.com/access/api)
+- [OpenAI API Key](https://platform.openai.com/docs/quickstart)
+- WhatsApp Business API credentials:
+  - Access Token
+  - App ID
+  - Phone Number ID
+  - Verify Token (for webhook setup)
 
-- [📖 Overview](#-overview)
-- [🚀 Quickstart](#-quickstart)
-  - [Node.js](#nodejs)
-  - [Python](#python)
-- [🗂 Repository Structure](#-repository-structure)
-- [🤝 Contributing](#-contributing)
-- [📜 Documentation](#-documentation)
-- [🚨 Security and bug reports](#-security-and-bug-reports)
-- [📧 Contact](#-contact)
-- [📝 License](#-license)
-- [🔒 Legal and Privacy](#-legal-and-privacy)
+## Setup
 
-## 📖 Overview
-
-AgentKit is [Coinbase Developer Platform's](https://docs.cdp.coinbase.com) framework for easily enabling AI agents to take actions onchain. It is designed to be framework-agnostic, so you can use it with any AI framework, and wallet-agnostic, so you can use it with any wallet. AgentKit is actively being built out, and [welcomes community contributions!](#contributing)
-
-<div align="center">
-  <a href="https://www.youtube.com/watch?v=-R_mKpdepRE">
-    <img src="https://img.youtube.com/vi/-R_mKpdepRE/maxresdefault.jpg" alt="Video Title" style="max-width: 600px;">
-  </a>
-</div>
-
-## 🚀 Quickstart
-
-### Node.js
-
-*Prerequisites*:
-- [Node.js 18+](https://nodejs.org/en/download/)
-- [CDP Secret API Key](https://docs.cdp.coinbase.com/get-started/docs/cdp-api-keys#creating-secret-api-keys)
-- [OpenAI API Key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key)
-
-1. Get your agent running:
-
+1. **Clone the repository and install dependencies:**
 ```bash
-# Clone the repository
-git clone https://github.com/coinbase/agentkit.git
-
-# Navigate to the langchain-cdp-chatbot example
-cd agentkit/typescript/examples/langchain-cdp-chatbot
-
-# At this point, fill in your CDP API key name, private key, and OpenAI API key in
-# the .env.example file.
-# Then, rename the .env.example file to .env
-mv .env.example .env
-
-# Install dependencies
-npm install
-
-# Run the chatbot
-npm run start
-```
-2. Select "1. chat mode" and start telling your Agent to do things onchain!
-
-```bash
-Prompt: Fund my wallet with some testnet ETH.
--------------------
-Wallet: ccaf1dbf-3a90-4e52-ad34-89a07aad9e8b on network: base-sepolia with default address: 0xD9b990c7b0079c1c3733D2918Ee50b68f29FCFD5
--------------------
-
--------------------
-Received eth from the faucet. Transaction: https://sepolia.basescan.org/tx/0x03e82934cd04be5b725927729b517c606f6f744611f0f36e834f21ad742ad7ca
--------------------
-Your wallet has been successfully funded with testnet ETH. You can view the transaction [here](https://sepolia.basescan.org/tx/0x03e82934cd04be5b725927729b517c606f6f744611f0f36e834f21ad742ad7ca).
--------------------
-```
-
-### Python
-
-*Prerequisites*:
-- [Python 3.10+](https://www.python.org/downloads/)
-- [Poetry](https://python-poetry.org/docs/)
-- [CDP Secret API Key](https://docs.cdp.coinbase.com/get-started/docs/cdp-api-keys#creating-secret-api-keys)
-- [OpenAI API Key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key)
-
-1. Get your agent running:
-
-```bash
-# Clone the repository
-git clone https://github.com/coinbase/agentkit.git
-
-# Navigate to the chatbot-python example
-cd agentkit/python/examples/cdp-langchain-chatbot 
-
-# At this point, fill in your CDP API key name, private key, and OpenAI API key in the
-# .env.example file.
-# Then, rename the .env.example file to .env
-mv .env.example .env
-
-# Install dependencies
 poetry install
+```
 
-# Run the chatbot
+2. **Configure environment variables:**
+Create a `.env` file in the project root with the following:
+```
+CDP_API_KEY_NAME=your_key_name
+CDP_API_KEY_PRIVATE_KEY=your_private_key
+OPENAI_API_KEY=your_openai_key
+NETWORK_ID=polygon-mainnet
+ACCESS_TOKEN=your_whatsapp_token
+APP_ID=your_app_id
+PHONE_NUMBER_ID=your_phone_number_id
+VERIFY_TOKEN=your_verify_token
+VERSION=v17.0
+```
+
+3. **Set up webhook endpoint:**
+- Install and configure [ngrok](https://ngrok.com/) for local development
+- Start ngrok to expose your local server:
+```bash
+ngrok http 5000
+```
+- Use the ngrok URL in the Meta Developer Portal for webhook configuration
+
+## Running the Bot
+
+1. **Start the WhatsApp bot:**
+```bash
+python whatsapp_bot.py
+```
+
+2. **Run in chat mode (for testing):**
+```bash
 make run
 ```
-2. Select "1. chat mode" and start telling your Agent to do things onchain!
 
+## Testing
+
+Run the test suite to verify API configurations:
 ```bash
-Prompt: Fund my wallet with some testnet ETH.
--------------------
-Wallet: ccaf1dbf-3a90-4e52-ad34-89a07aad9e8b on network: base-sepolia with default address: 0xD9b990c7b0079c1c3733D2918Ee50b68f29FCFD5
--------------------
-
--------------------
-Received eth from the faucet. Transaction: https://sepolia.basescan.org/tx/0x03e82934cd04be5b725927729b517c606f6f744611f0f36e834f21ad742ad7ca
--------------------
-Your wallet has been successfully funded with testnet ETH. You can view the transaction [here](https://sepolia.basescan.org/tx/0x03e82934cd04be5b725927729b517c606f6f744611f0f36e834f21ad742ad7ca).
--------------------
+python -m pytest
 ```
 
-## 🗂 Repository Structure
+Individual tests can be run for specific components:
+- `test_whatsapp.py`: WhatsApp API connection
+- `test_openai.py`: OpenAI API integration
+- `test_cdp.py`: CDP configuration
 
-AgentKit is organized as a monorepo that contains multiple packages.
+## Troubleshooting
 
-```
-./
-├── typescript/
-│   ├── agentkit/
-│   ├── framework-extensions/
-│   |   └── langchain/
-│   └── examples/
-│       ├── langchain-cdp-chatbot/
-│       ├── langchain-farcaster-chatbot/
-│       └── langchain-twitter-chatbot/
-├── python/
-│   ├── cdp-agentkit-core/
-│   ├── cdp-langchain/
-│   ├── twitter-langchain/
-│   └── examples/
-│       ├── cdp-langchain-chatbot/
-│       └── twitter-langchain-chatbot/
-```
+- Ensure all environment variables are properly set
+- Verify webhook URL is correctly configured in Meta Developer Portal
+- Check ngrok tunnel is active and webhook URL is up to date
+- Confirm Python version compatibility (3.10+)
 
-## 🤝 Contributing
+## License
 
-**AgentKit is actively looking for community contributions!**
-
-- To see a list of actions and frameworks we'd love to see open-source contributions for, see [WISHLIST.md](./WISHLIST.md).
-- To understand the process for contributing to AgentKit, see [CONTRIBUTING.md](./CONTRIBUTING.md).
-
-## 📜 Documentation
-
-- [AgentKit Documentation](https://docs.cdp.coinbase.com/agentkit/docs/welcome)
-- Python API References
-  - [AgentKit Core](https://coinbase.github.io/agentkit/cdp-agentkit-core/python/index.html)
-  - [AgentKit Langchain Extension](https://coinbase.github.io/agentkit/cdp-langchain/python/index.html)
-- Node.js API References
-  - [AgentKit](https://coinbase.github.io/agentkit/agentkit/typescript/index.html)
-  - [AgentKit Langchain Extension](https://coinbase.github.io/agentkit/agentkit-langchain/typescript/index.html)
-
-## 🚨 Security and Bug Reports
-
-The AgentKit team takes security seriously.
-See [SECURITY.md](SECURITY.md) for more information.
-
-## 📧 Contact
-
-For feature requests, feedback, or questions, please reach out to us via the 
-[Coinbase Developer Platform Discord](https://discord.com/channels/1220414409550336183/1304126107876069376).
-
-## 📝 License
-
-AgentKit is licensed under the [Apache-2.0](LICENSE.md) license.
-
-## 🔒 Legal and Privacy
-
-The AgentKit software is novel and experimental, and is therefore provided on an AS-IS basis.
- The software is intended to be used only for the purposes of assisting with designing 
- blockchain transactions and enabling other API integrations using natural language inputs, 
- and is not intended to provide (i) an offer, or solicitation of an offer, to invest in, or to 
- buy or sell, any interests or shares, or to participate in any investment or trading 
- strategy, (ii) accounting, legal, tax advice, investment recommendations or other 
- professional advice or (iii) an official statement of Coinbase. Acts proposed or performed by 
- an agent through AgentKit software are NOT acts of Coinbase. You should consult with a 
- professional advisor before making any decisions based on the information provided by the 
- software. No representation or warranty is made, expressed or implied, with respect to the 
- accuracy, completeness, reliability, security, or suitability of the software or to any 
- information provided in connection with the software. The risk of loss through use of the 
- software can be substantial, and you assume any and all risks of loss and liability. The 
- software may produce output that is inaccurate, incorrect, unpredictable or undesirable, and 
- it is the user's exclusive responsibility to evaluate the output and the use-case and 
- determine whether it is appropriate. The right to use the software is contingent on your 
- agreement to the [CDP Terms of Service](https://www.coinbase.com/legal/developer-platform/terms-of-service) (except to the extent it conflicts with the Apache-2.0 license).
+This project is licensed under the MIT License - see the LICENSE file for details.

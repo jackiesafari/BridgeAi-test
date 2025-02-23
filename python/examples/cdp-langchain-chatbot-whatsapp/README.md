@@ -1,91 +1,87 @@
-# CDP Agentkit LangChain Extension Examples - WhatsApp Chatbot Python
+# CDP WhatsApp AI Chatbot
 
-This example demonstrates an agent setup as a Update WhatsApp """terminal""" style chatbot with access to the full set of CDP Agentkit actions.
+A WhatsApp chatbot powered by CDP (Coinbase Developer Platform) Agentkit and LangChain, enabling intelligent conversations and blockchain interactions through WhatsApp.
 
-## Ask the chatbot to engage in the Web3 ecosystem!
-- "Transfer a portion of your ETH to john2879.base.eth"
-- "Deploy an NFT that will go super viral!"
-- "Choose a name for yourself and register a Basename for your wallet"
-- "Deploy an ERC-20 token with total supply 1 billion"
+## Features
 
-## Requirements
+- WhatsApp message handling via webhooks
+- AI-powered responses using GPT-4
+- Blockchain interaction capabilities on Polygon network
+- Autonomous and interactive chat modes
+- Secure key management and environment configuration
+
+## Prerequisites
+
 - Python 3.10+
-- Poetry for package management and tooling
-  - [Poetry Installation Instructions](https://python-poetry.org/docs/#installation)
+- [Poetry](https://python-poetry.org/docs/#installation) for dependency management
 - [CDP API Key](https://portal.cdp.coinbase.com/access/api)
-- [OpenAI API Key](https://platform.openai.com/docs/quickstart#create-and-export-an-api-key)
+- [OpenAI API Key](https://platform.openai.com/docs/quickstart)
+- WhatsApp Business API credentials:
+  - Access Token
+  - App ID
+  - Phone Number ID
+  - Verify Token (for webhook setup)
 
+## Setup
 
-### Checking Python Version
-Before using the example, ensure that you have the correct version of Python installed. The example requires Python 3.10 or higher. You can check your Python version by running the following code:
-
-```bash
-python --version
-poetry --version
-```
-
-## Setup Virtual Environment
-
-```bash
-python -m venv venv
-```
-
-## Create a requirements.txt file yet and add the following dependencies:
-langchain
-python-dotenv
-pydantic
-
-## Installation
+1. **Clone the repository and install dependencies:**
 ```bash
 poetry install
 ```
-Installation
 
-Install the library
-
-```bash
-%pip install -qU cdp-langchain
+2. **Configure environment variables:**
+Create a `.env` file in the project root with the following:
+```
+CDP_API_KEY_NAME=your_key_name
+CDP_API_KEY_PRIVATE_KEY=your_private_key
+OPENAI_API_KEY=your_openai_key
+NETWORK_ID=polygon-mainnet
+ACCESS_TOKEN=your_whatsapp_token
+APP_ID=your_app_id
+PHONE_NUMBER_ID=your_phone_number_id
+VERIFY_TOKEN=your_verify_token
+VERSION=v17.0
 ```
 
+3. **Set up webhook endpoint:**
+- Install and configure [ngrok](https://ngrok.com/) for local development
+- Start ngrok to expose your local server:
+```bash
+ngrok http 5000
+```
+- Use the ngrok URL in the Meta Developer Portal for webhook configuration
 
+## Running the Bot
 
-## Run the Chatbot
+1. **Start the WhatsApp bot:**
+```bash
+python whatsapp_bot.py
+```
 
-### Set ENV Vars
-- Ensure the following ENV Vars are set:
-  - "CDP_API_KEY_NAME"
-  - "CDP_API_KEY_PRIVATE_KEY"
-  - "OPENAI_API_KEY"
-  - "NETWORK_ID" (Defaults to `base-sepolia`)
-  
-  FOR WHATSAPP 
-  - "ACCESS_TOKEN"
-  - "APP_ID"
-  - "RECEPIENT_WAID"
-  - "VERSION"
-  - "PHONE_NUMBER_ID"
-
-
-
-
+2. **Run in chat mode (for testing):**
 ```bash
 make run
 ```
 
+## Testing
+
+Run the test suite to verify API configurations:
+```bash
+python -m pytest
+```
+
+Individual tests can be run for specific components:
+- `test_whatsapp.py`: WhatsApp API connection
+- `test_openai.py`: OpenAI API integration
+- `test_cdp.py`: CDP configuration
+
 ## Troubleshooting
-If you encounter issues with Poetry make sure to add a PATH to your shell configuration file. 
 
-### To get the WhatsApp API working
-- Make sure to set the correct values in the .env file
-- Make sure to set the correct values in the webhook.py file
- 1. First, install Flask and required packages
- # Using poetry
-poetry add flask python-dotenv requests
-2. Create Ngrok account and install the ngrok CLI 
-3. Run ngrok and get the ngrok URL
-- Make sure to set the correct values in the whatsapp_bot.py file
+- Ensure all environment variables are properly set
+- Verify webhook URL is correctly configured in Meta Developer Portal
+- Check ngrok tunnel is active and webhook URL is up to date
+- Confirm Python version compatibility (3.10+)
 
-## Run the Whatsapp Bot [locally]
--Run the python whatsapp_bot.py file ```python whatsapp_bot.py```
--Make sure to get token from Meta Developer Portal and set it in the .env file 
--Go to ngrok and get the ngrok url to then input it into the Meta Developer Portal  
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
