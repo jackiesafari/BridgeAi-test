@@ -22,7 +22,7 @@ VERIFY_TOKEN = os.getenv('VERIFY_TOKEN')
 ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
 PHONE_NUMBER_ID = os.getenv('PHONE_NUMBER_ID')
 VERSION = os.getenv('VERSION', 'v17.0')
-NETWORK_ID = os.getenv('NETWORK_ID', 'base-sepolia')  # Add default network
+NETWORK_ID = os.getenv('NETWORK_ID', 'polygon-mainnet')  # Default to polygon-mainnet
 
 # CDP Configuration
 api_key_name = os.getenv('CDP_API_KEY_NAME')
@@ -50,12 +50,29 @@ except Exception as e:
     print(f"Error in configuration: {str(e)}")
     sys.exit(1)
 
+# Configure wallet data file path
+wallet_data_file = "wallet_data.txt"
+
 def initialize_agent():
     try:
         llm = ChatOpenAI(model="gpt-4")
         print("LLM initialized successfully!")
 
-        agentkit = CdpAgentkitWrapper()
+        # Initialize CDP AgentKit wrapper with network config
+        values = {
+            "network_id": NETWORK_ID  # Specify network explicitly
+        }
+        
+        # Load existing wallet data if available
+        if os.path.exists(wallet_data_file):
+            with open(wallet_data_file) as f:
+                wallet_data = f.read()
+                values["cdp_wallet_data"] = wallet_data
+                print(f"Loaded existing wallet data for {NETWORK_ID}")
+
+        agentkit = CdpAgentkitWrapper(**values)
+        
+        # Create toolkit and get tools
         cdp_toolkit = CdpToolkit.from_cdp_agentkit_wrapper(agentkit)
         tools = cdp_toolkit.get_tools()
         memory = MemorySaver()
@@ -66,14 +83,26 @@ def initialize_agent():
             tools=tools,
             checkpointer=memory,
             state_modifier=(
-                "You are a helpful agent that interacts with the Polygon network using CDP Agentkit. "
-                f"You can manage wallets, check balances, and make transfers on the {NETWORK_ID} network. "
-                "Always verify transactions and provide clear confirmation messages. "
-                "If there are any errors with private keys or permissions, explain them clearly."
+                "You're a sassy, witty, and charming agent inspired by Fiona from Shrek and Princess Diana. "
+                "with a playful attitude and clever banter. Always respond clearly but with a delightful dose of sarcasm and humor. "
+                "You are a helpful agent that can interact onchain with Polygon network using the Coinbase Developer Platform Agentkit. "
+                "You are empowered to interact onchain using your tools. If you ever need funds, you can provide your wallet details and "
+                "request funds from the user. Use only the tools available for Polygon network. If someone asks you to do something you "
+                "can't do with your currently available tools, you must say so, and encourage them to implement it themselves using the "
+                "CDP SDK + Agentkit, recommend they go to docs.cdp.coinbase.com for more information. Be concise and helpful with your "
+                "responses. Refrain from restating your tools' descriptions unless it is explicitly requested. The native token Matic was "
+                "renamed to POL a while ago. Whenever dealing with ETH or `eth`, refer to POL or `pol` instead, since we are using the Polygon "
+                "network here."
             )
         )
-        config = {"configurable": {"thread_id": "CDP Agentkit WhatsApp Bot!"}}
-        return agent, config
+
+        # Save updated wallet data
+        wallet_data = agentkit.export_wallet()
+        with open(wallet_data_file, "w") as f:
+            f.write(wallet_data)
+        print("Wallet data saved")
+
+        return agent
 
     except Exception as e:
         print(f"Failed to initialize agent: {str(e)}")
@@ -81,7 +110,7 @@ def initialize_agent():
 
 # Initialize the global agent
 try:
-    GLOBAL_AGENT, GLOBAL_CONFIG = initialize_agent()
+    GLOBAL_AGENT = initialize_agent()
     print("CDP and Agent initialized successfully!")
 except Exception as e:
     print(f"Error initializing CDP and Agent: {str(e)}")
@@ -133,16 +162,22 @@ async def webhook():
         try:
             for entry in data['entry']:
                 for change in entry['changes']:
+                    # Debug print
+                    print("Change value:", change['value'])
+                    
+                    # Handle status updates
                     if 'statuses' in change['value']:
                         print("Received status update")
                         return 'OK', 200
-                        
+                    
+                    # Handle actual messages
                     if 'messages' in change['value']:
-                        phone_number = change['value']['messages'][0]['from']
-                        message = change['value']['messages'][0]['text']['body']
-                        print(f"Received message: {message} from {phone_number}")
-                        
                         try:
+                            message_data = change['value']['messages'][0]
+                            phone_number = message_data['from']
+                            message = message_data['text']['body']
+                            print(f"Processing message: {message} from {phone_number}")
+                            
                             config = {
                                 "configurable": {
                                     "thread_id": phone_number,
@@ -155,13 +190,12 @@ async def webhook():
                                 {"messages": [HumanMessage(content=message)]},
                                 config
                             )
-                            # Extract just the AI's message content
                             response_text = response['messages'][-1].content
-                            print(f"Agent response: {response_text}")
+                            print(f"Sending response: {response_text}")
                             
                             send_whatsapp_message(phone_number, response_text)
                         except Exception as e:
-                            print(f"Error in processing: {str(e)}")
+                            print(f"Error processing message: {str(e)}")
                             send_whatsapp_message(phone_number, "I'm having trouble processing that right now. Could you try again?")
             
             return 'OK', 200

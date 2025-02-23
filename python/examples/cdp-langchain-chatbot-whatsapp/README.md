@@ -85,7 +85,7 @@ poetry add flask python-dotenv requests
 3. Run ngrok and get the ngrok URL
 - Make sure to set the correct values in the whatsapp_bot.py file
 
-## Run the Whatsapp Bot
--Run the python whatsapp_bot.py file
+## Run the Whatsapp Bot [locally]
+-Run the python whatsapp_bot.py file ```python whatsapp_bot.py```
 -Make sure to get token from Meta Developer Portal and set it in the .env file 
 -Go to ngrok and get the ngrok url to then input it into the Meta Developer Portal  
