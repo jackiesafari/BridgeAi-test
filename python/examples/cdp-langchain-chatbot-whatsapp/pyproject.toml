@@ -12,6 +12,10 @@ python-dotenv = "^1.0.1"
 cdp-langchain = "^0.0.13"
 langchain = "^0.3.18"
 langchain-core = "^0.3.34"
+flask = {extras = ["async"], version = "^3.1.0"}
+requests = "^2.32.3"
+pycoingecko = "^3.2.0"
+openai = "^1.64.0"
 
 [build-system]
 requires = ["poetry-core"]

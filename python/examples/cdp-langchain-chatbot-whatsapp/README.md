@@ -21,6 +21,8 @@ A WhatsApp chatbot powered by CDP (Coinbase Developer Platform) Agentkit and Lan
   - App ID
   - Phone Number ID
   - Verify Token (for webhook setup)
+## Install
+pip install cdp-sdk
 
 ## Setup
 
@@ -53,7 +55,7 @@ ngrok http 5000
 
 ## Running the Bot
 
-1. **Start the WhatsApp bot:**
+1. **Start the WhatsApp agent:**
 ```bash
 python whatsapp_bot.py
 ```
