@@ -22,6 +22,8 @@ A WhatsApp agent powered by CDP (Coinbase Developer Platform) Agentkit and LangC
   - Phone Number ID
   - Verify Token (for webhook setup)
 
+  
+
 ## Setup
 
 1. **Clone the repository and install dependencies:**
@@ -29,7 +31,8 @@ A WhatsApp agent powered by CDP (Coinbase Developer Platform) Agentkit and LangC
 poetry install
 ```
 
-2. **Configure environment variables:**
+
+ 2. **Configure environment variables:**
 Create a `.env` file in the project root with the following:
 ```
 CDP_API_KEY_NAME=your_key_name
@@ -42,28 +45,29 @@ PHONE_NUMBER_ID=your_phone_number_id
 VERIFY_TOKEN=your_verify_token
 VERSION=v17.0
 ```
+Website to get Token for your whatsapp: https://developers.facebook.com/apps/476470498862977/whatsapp-business/wa-dev-console/?business_id=613685664604834
 
-3. **Set up webhook endpoint:**
+3. **Set up webhook endpoint:** 
 - Install and configure [ngrok](https://ngrok.com/) for local development
 - Start ngrok to expose your local server:
 ```bash
 ngrok http 5000
 ```
 - Use the ngrok URL in the Meta Developer Portal for webhook configuration
+## Install
+open another terminal
+```pip install cdp-sdk```
 
 ## Running the Bot
 
-1. **Start the WhatsApp bot:**
+1. **Start the WhatsApp Agent:** 
 ```bash
 python whatsapp_bot.py
 ```
 
-2. **Run in chat mode (for testing):**
-```bash
-make run
-```
-
 ## Testing
+
+Open your Whatsapp to test out your agent!
 
 Run the test suite to verify API configurations:
 ```bash
